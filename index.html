@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Client Server Network Simulation</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <header>
+
+        <h1>Client–Server Network</h1>
+
+        <p>
+            DNS • HTTP/Web Server • FTP • Network Services
+        </p>
+
+    </header>
+
+
+    <!-- ================= TOPOLOGY ================= -->
+
+    <section class="card">
+
+        <h2>Network Topology</h2>
+
+        <div class="topology">
+
+
+            <!-- CLIENT -->
+
+            <div class="device client">
+
+                <div class="icon">
+                    💻
+                </div>
+
+                <h3>Client PC</h3>
+
+                <p>
+                    IP: 192.168.10.10
+                </p>
+
+                <p>
+                    MAC: 00:11:22:33:44:55
+                </p>
+
+            </div>
+
+
+            <!-- CONNECTION -->
+
+            <div class="connection">
+
+                <div class="line" id="line1"></div>
+
+                <span>
+                    Ethernet
+                </span>
+
+            </div>
+
+
+            <!-- SWITCH -->
+
+            <div class="device switch">
+
+                <div class="icon">
+                    🔀
+                </div>
+
+                <h3>SW1</h3>
+
+                <p>
+                    Layer 2 Switch
+                </p>
+
+            </div>
+
+
+            <!-- CONNECTION -->
+
+            <div class="connection">
+
+                <div class="line" id="line2"></div>
+
+                <span>
+                    Ethernet
+                </span>
+
+            </div>
+
+
+            <!-- SERVER -->
+
+            <div class="device server">
+
+                <div class="icon">
+                    🖥️
+                </div>
+
+                <h3>Server</h3>
+
+                <p>
+                    IP: 192.168.10.20
+                </p>
+
+                <p>
+                    DNS / HTTP / FTP
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SERVER SERVICES ================= -->
+
+    <section class="card">
+
+        <h2>Server Services</h2>
+
+        <div class="services">
+
+
+            <div class="service dns">
+
+                <div class="service-icon">
+                    🌐
+                </div>
+
+                <h3>DNS Server</h3>
+
+                <p>
+                    192.168.10.20
+                </p>
+
+                <span class="status">
+                    RUNNING
+                </span>
+
+            </div>
+
+
+            <div class="service http">
+
+                <div class="service-icon">
+                    🌍
+                </div>
+
+                <h3>HTTP Web Server</h3>
+
+                <p>
+                    Port 80
+                </p>
+
+                <span class="status">
+                    RUNNING
+                </span>
+
+            </div>
+
+
+            <div class="service ftp">
+
+                <div class="service-icon">
+                    📁
+                </div>
+
+                <h3>FTP Server</h3>
+
+                <p>
+                    Port 21
+                </p>
+
+                <span class="status">
+                    RUNNING
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CONTROLS ================= -->
+
+    <section class="card">
+
+        <h2>Simulation Controls</h2>
+
+        <div class="controls">
+
+            <button onclick="startSimulation()">
+                ▶ Start Simulation
+            </button>
+
+            <button onclick="nextStep()">
+                ➜ Next Step
+            </button>
+
+            <button onclick="resetSimulation()">
+                ↻ Reset
+            </button>
+
+        </div>
+
+
+        <div class="progress-container">
+
+            <div id="progress"></div>
+
+        </div>
+
+
+        <p id="stepText">
+            Ready to start client-server simulation.
+        </p>
+
+    </section>
+
+
+    <!-- ================= REQUEST ================= -->
+
+    <section class="card">
+
+        <h2>Network Request</h2>
+
+        <div class="packet">
+
+            <div>
+
+                <strong>
+                    Client
+                </strong>
+
+                <span id="packetClient">
+                    --
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Service
+                </strong>
+
+                <span id="packetService">
+                    --
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Protocol
+                </strong>
+
+                <span id="packetProtocol">
+                    --
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Destination
+                </strong>
+
+                <span id="packetDestination">
+                    --
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Port
+                </strong>
+
+                <span id="packetPort">
+                    --
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Status
+                </strong>
+
+                <span id="packetStatus">
+                    --
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= DNS TABLE ================= -->
+
+    <section class="card">
+
+        <h2>DNS Records</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Domain Name</th>
+
+                    <th>Record Type</th>
+
+                    <th>IP Address</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        www.network.local
+                    </td>
+
+                    <td>
+                        A
+                    </td>
+
+                    <td>
+                        192.168.10.20
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <td>
+                        ftp.network.local
+                    </td>
+
+                    <td>
+                        A
+                    </td>
+
+                    <td>
+                        192.168.10.20
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <td>
+                        dns.network.local
+                    </td>
+
+                    <td>
+                        A
+                    </td>
+
+                    <td>
+                        192.168.10.20
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+
+    <!-- ================= HTTP RESPONSE ================= -->
+
+    <section class="card">
+
+        <h2>HTTP Web Server</h2>
+
+        <div class="browser">
+
+            <div class="browser-bar">
+
+                http://www.network.local
+
+            </div>
+
+            <div id="webPage" class="web-page">
+
+                <h2>
+                    Network Web Server
+                </h2>
+
+                <p>
+                    Waiting for HTTP request...
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FTP ================= -->
+
+    <section class="card">
+
+        <h2>FTP File Transfer</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>File</th>
+
+                    <th>Size</th>
+
+                    <th>Transfer Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        network-report.pdf
+                    </td>
+
+                    <td>
+                        2.4 MB
+                    </td>
+
+                    <td id="ftpStatus">
+                        Waiting
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <td>
+                        topology.png
+                    </td>
+
+                    <td>
+                        850 KB
+                    </td>
+
+                    <td>
+                        Available
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+
+    <!-- ================= CONSOLE ================= -->
+
+    <section class="card">
+
+        <h2>Server Communication Log</h2>
+
+        <div id="console" class="console">
+
+            <div>
+                Client-server simulator ready...
+            </div>
+
+            <div>
+                Click "Start Simulation" to begin.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CONNECTIVITY ================= -->
+
+    <section class="card">
+
+        <h2>Service Connectivity Test</h2>
+
+        <div id="connectivity" class="connectivity">
+
+            Waiting for simulation...
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TEST RESULTS ================= -->
+
+    <section class="card">
+
+        <h2>Application Test Result</h2>
+
+        <div class="results">
+
+
+            <div>
+
+                DNS Name Resolution
+
+                <span id="test1">
+                    WAITING
+                </span>
+
+            </div>
+
+
+            <div>
+
+                HTTP Web Server
+
+                <span id="test2">
+                    WAITING
+                </span>
+
+            </div>
+
+
+            <div>
+
+                FTP Service
+
+                <span id="test3">
+                    WAITING
+                </span>
+
+            </div>
+
+
+            <div>
+
+                Client-Server Communication
+
+                <span id="test4">
+                    WAITING
+                </span>
+
+            </div>
+
+
+            <div>
+
+                Network Services
+
+                <span id="test5">
+                    WAITING
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <footer>
+
+        <p>
+            Computer Networks — Client–Server Network Simulation
+        </p>
+
+    </footer>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
